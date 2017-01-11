@@ -3,17 +3,34 @@
 	<head>
 		<link rel="stylesheet" type="text/css" href="02teach.css">
 		<script src="02teach.js"></script>
+
+		<!-- Bootstrap stuff -->
+		<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+		<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>
+		<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+		<!-- End Bootstrap stuff -->
+
 		<title>02 Teach: Team Activity</title>
 	</head>
 	<body>
-		<div id="div1" class="div-font">Div #1</div>
-		<div id="div2" class="div-font">Div #2</div>
-		<div id="div3" class="div-font">Div #3</div>
+		<div class="container">
+			<div class="row">
+				<div id="div1" class="div-style hover col-sm-4">Div #1</div>
+				<div id="div2" class="div-style hover col-sm-4">Div #2</div>
+				<div id="div3" class="div-style hover col-sm-4">Div #3</div>
+			</div><br>
+			
+			<div class="row">
+				<div class="col-sm-12 button-style">
+					<button onclick="clickMe();">Click Me</button><br><br>
+				</div>
+			</div>
 
-		<button onclick="clickMe();">Click Me</button><br/>
+			<label for="txtColor">Color:</label> <input type="text" id="txtColor" placeholder="#ffffff"><br>
+			
+			<button onclick="changeColor();">Change Color</button><br><br>
 
-		<label for="txtColor">Color:</label> <input type="text" id="txtColor" placeholder="#cccccc"><br />
-		
-		<button onclick="changeColor();">Change color</button>
+			<button onclick="changeVisibility();">Change Visibility</button>
+		</div>
 	</body>
 </html>

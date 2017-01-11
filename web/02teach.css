@@ -1,5 +1,11 @@
-.div-font {
-	font-size: 0.7em;
+.div-style {
+	font-size: 2.5em;
+	text-align: center;
+}
+
+.button-style {
+	font-size: 1.2em;
+	text-align: center;
 }
 
 #div1 {
@@ -14,6 +20,6 @@
 	background-color: #87d3c1;
 }
 
-.hover-bold:hover {
+.hover:hover {
 	font-weight: bold;
 }
