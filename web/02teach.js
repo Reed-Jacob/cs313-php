@@ -3,13 +3,15 @@ function clickMe() {
 }
 
 function changeColor() {
-	var textbox_id = "txtColor";
+	// Retrive data from input
+	var textbox_id = "textColor";
 	var textbox = document.getElementById(textbox_id);
 
+	// Set which div will recieve changes
 	var div_id = "div1";
 	var div = document.getElementById(div_id);
 
-	// We should verify values here before we use them...
+	// Verify and set new value
 	var color = textbox.value;
 	div.style.backgroundColor = color;
 
