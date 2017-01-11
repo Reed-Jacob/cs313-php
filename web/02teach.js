@@ -19,12 +19,16 @@ function changeColor() {
 }
 
 // Change Color jQuery
+$(document).ready(function(){
 $("#changeColor").click(function(){
   var newColor = $("input").val();
   $("#div1").css("background-color", newColor);
  });
+ });
 
 // Change Visiblity jQuery //
+$(document).ready(function(){
 $("#fade").click(function(){
 		$("#div3").fadeToggle("slow");
+});
 });
