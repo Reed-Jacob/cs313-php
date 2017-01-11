@@ -14,3 +14,10 @@ function changeColor() {
 	div.style.backgroundColor = color;
 
 }
+
+// Change Visiblity jQuery //
+$(document).ready(function(){
+    $(".fade").click(function(){
+		$("#div3").fadeToggle("slow");
+	});
+});
