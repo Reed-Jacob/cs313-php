@@ -17,7 +17,7 @@ function changeColor() {
 
 // Change Visiblity jQuery //
 $(document).ready(function(){
-    $(".fade").click(function(){
+    $("#fade").click(function(){
 		$("#div3").fadeToggle("slow");
 	});
 });
