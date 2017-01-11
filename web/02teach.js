@@ -2,6 +2,7 @@ function clickMe() {
 	alert("Clicked!");
 }
 
+
 function changeColor() {
 	// Retrive data from input
 	var textbox_id = "textColor";
@@ -17,9 +18,13 @@ function changeColor() {
 
 }
 
+// Change Color jQuery
+$("#changeColor").click(function(){
+  var newColor = $("input").val();
+  $("#div1").css("background-color", newColor);
+ });
+
 // Change Visiblity jQuery //
-$(document).ready(function(){
-    $("#fade").click(function(){
+$("#fade").click(function(){
 		$("#div3").fadeToggle("slow");
-	});
 });
