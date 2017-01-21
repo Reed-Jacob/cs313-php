@@ -41,7 +41,7 @@ a:hover {
 
 .lower-title {
   font-size: 3em;
-  font-weight: 700;
+  font-weight: 500;
   color: #333;
 }
 
@@ -132,4 +132,51 @@ a:hover {
 .navbar-text {
   float: right;
   margin-right: 25px;
+}
+
+.radio {
+	text-align: left !important;
+}
+
+.results {
+	float: left;
+	font-size: 15px;
+	line-height: 40px;
+	text-align: left !important;
+	text-transform: uppercase;
+	margin-top: 10px;
+	width: 100%;
+}
+
+.vote-yes {
+	margin-bottom: 5px;
+}
+
+.vote-title-no {
+	padding-right: 6px;
+}
+
+.col-border {
+
+}
+
+label {
+	font-weight: 200 !important;
+}
+
+.survey-button {
+	width: 100px;
+	color: #000;
+}
+
+.survey-button input:hover{
+	color: #ffaaaa;
+}
+
+.survey-button button:hover{
+	color: #ffaaaa;
+}
+
+.col-sm-6 {
+	margin-bottom: 15px;
 }
