@@ -2,8 +2,9 @@
 <?php
 
 // Start a Session
- session_start();
- $_SESSION["surveytaken"] = "yes";
+ $cookie_name = "surveytaken";
+ $cookie_value = "yes";
+ setcookie($cookie_name, $cookie_value, time()+31556926, "/"); // 1 Year (I think)
 
 // Error reporting
 // ini_set('display_errors', 'On');

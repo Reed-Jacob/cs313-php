@@ -1,16 +1,10 @@
 
 <?php
 
-// Temporary! Remove later
-// remove all session variables
-// session_unset();
-
-// destroy the session
-// session_destroy();
-
 // Error reporting on
-ini_set('display_errors', 'On');
-error_reporting(E_ALL);
+// ini_set('display_errors', 'On');
+// error_reporting(E_ALL);
+// print_r($_COOKIE);
 
 // Read in data and set filename
 $filename = "survey.txt";
@@ -36,7 +30,7 @@ $no4 = $array[7];
 		<meta charset="utf-8">
 		<meta name="viewport" content="width=device-width, initial-scale=1">
 
-		<title>Prove 03</title>
+		<title>Prove 032</title>
 
 		<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
  		<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>

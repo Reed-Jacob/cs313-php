@@ -1,10 +1,12 @@
 <?php
 
-// If session exists, redirect to results.
- if(!isset($_SESSION['surveytaken'])) {
-	header("Location: 03proveResults.php");
-	exit;
- }
+// If cookie exists, redirect to results.
+// print_r($_COOKIE);
+
+if(isset ($_COOKIE['surveytaken'])) {
+  header('Location: 03proveResults.php');
+  exit;
+}
 
 ?>
 
