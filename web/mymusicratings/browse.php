@@ -4,21 +4,18 @@
     ini_set("display_errors", 1);
     session_start();
 
-    $dbUser = 'postgres';
-    $dbPassword = 'password';
-    $dbName = 'localhost';
-    $dbHost = 'localhost';
-    $dbPort = '5432';
+    $dbUrl = getenv('DATABASE_URL');
+
+    $dbopts = parse_url($dbUrl);
+
+    $dbHost = $dbopts["host"];
+    $dbPort = $dbopts["port"];
+    $dbUser = $dbopts["user"];
+    $dbPassword = $dbopts["pass"];
+    $dbName = ltrim($dbopts["path"],'/');
 
     $db = pg_connect("host=$dbHost port=$dbPort dbname=$dbName user=$dbUser password=$dbPassword");
-    if (!$db) {
-      echo ("<SCRIPT LANGUAGE='JavaScript'>
-              window.alert('Unable to establish connection to database. Try again later.')
-              window.location.href='http://127.0.0.1/mymusicratings/index.php';
-              </SCRIPT>");
-      exit;
-    }
-
+    
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -88,7 +85,7 @@
             $y++;
             echo '<div class="col-md-3 ">';
               /* Album Info */
-              echo '<img src="temp.png" height="180" width="180"/>';
+              echo '<img src="..\temp.png" height="180" width="180"/>';
               echo '<br/>';
               echo $row['album_artist'];
               echo '<br/>';
