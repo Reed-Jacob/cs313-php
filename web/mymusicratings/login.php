@@ -11,12 +11,13 @@
   $dbopts = parse_url($dbUrl);
 
   $dbHost = $dbopts["host"];
-  $dbPort = '5432';
+  $dbPort = $dbopts["port"];
   $dbUser = $dbopts["user"];
   $dbPassword = $dbopts["pass"];
   $dbName = ltrim($dbopts["path"],'/');
 
-  $db = pg_connect("pgsql:host=$dbHost;port=$dbPort;dbname=$dbName", $dbUser, $dbPassword);
+  $db = pg_connect("host=$dbHost port=$dbPort dbname=$dbName user=$dbUser password=$dbPassword");
+
 
   // Form data
 	$username = $_POST['username'];

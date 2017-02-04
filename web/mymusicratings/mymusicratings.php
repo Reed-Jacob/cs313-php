@@ -15,7 +15,7 @@
     $dbPassword = $dbopts["pass"];
     $dbName = ltrim($dbopts["path"],'/');
 
-    $db = pg_connect("pgsql:host=$dbHost;port=$dbPort;dbname=$dbName", $dbUser, $dbPassword);
+    $db = pg_connect("host=$dbHost port=$dbPort dbname=$dbName user=$dbUser password=$dbPassword");
 
 ?>
 <!DOCTYPE html>
