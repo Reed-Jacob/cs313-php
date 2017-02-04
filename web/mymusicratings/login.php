@@ -16,7 +16,7 @@
   $dbPassword = $dbopts["pass"];
   $dbName = ltrim($dbopts["path"],'/');
 
-  $db = new PDO("pgsql:host=$dbHost;port=$dbPort;dbname=$dbName", $dbUser, $dbPassword);
+  $db = pg_connect("pgsql:host=$dbHost;port=$dbPort;dbname=$dbName", $dbUser, $dbPassword);
 
   // Form data
 	$username = $_POST['username'];

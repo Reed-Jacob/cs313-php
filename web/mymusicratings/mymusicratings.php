@@ -2,6 +2,7 @@
 
     error_reporting(E_ALL);
     ini_set("display_errors", 1);
+
     session_start();
 
     $dbUrl = getenv('DATABASE_URL');
@@ -14,7 +15,7 @@
     $dbPassword = $dbopts["pass"];
     $dbName = ltrim($dbopts["path"],'/');
 
-    $db = new PDO("pgsql:host=$dbHost;port=$dbPort;dbname=$dbName", $dbUser, $dbPassword);
+    $db = pg_connect("pgsql:host=$dbHost;port=$dbPort;dbname=$dbName", $dbUser, $dbPassword);
 
 ?>
 <!DOCTYPE html>
