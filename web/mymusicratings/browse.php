@@ -15,7 +15,7 @@
     $dbName = ltrim($dbopts["path"],'/');
 
     $db = pg_connect("host=$dbHost port=$dbPort dbname=$dbName user=$dbUser password=$dbPassword");
-    
+
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -85,7 +85,7 @@
             $y++;
             echo '<div class="col-md-3 ">';
               /* Album Info */
-              echo '<img src="..\temp.png" height="180" width="180"/>';
+              echo '<img src="/mymusicratings/temp.png" height="180" width="180"/>';
               echo '<br/>';
               echo $row['album_artist'];
               echo '<br/>';
