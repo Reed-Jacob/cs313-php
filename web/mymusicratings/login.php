@@ -1,7 +1,7 @@
 <?php
 
-  error_reporting(E_ALL);
-  ini_set("display_errors", 1);
+  // error_reporting(E_ALL);
+  // ini_set("display_errors", 1);
 
   ob_start();
   session_start();
@@ -17,7 +17,13 @@
   $dbName = ltrim($dbopts["path"],'/');
 
   $db = pg_connect("host=$dbHost port=$dbPort dbname=$dbName user=$dbUser password=$dbPassword");
-
+  if (!$db) {
+    echo ("<SCRIPT LANGUAGE='JavaScript'>
+            window.alert('Unable to establish connection to database. Try again later.')
+            window.location.href='index.php';
+            </SCRIPT>");
+    exit;
+  }
 
   // Form data
 	$username = $_POST['username'];
@@ -35,11 +41,12 @@
 
   // Redirect based on credentials
   if ($confirm == 1) {
+    $_SESSION['logged_in'] = true;
     header("location: mymusicratings.php");
   } else {
      echo ("<SCRIPT LANGUAGE='JavaScript'>
              window.alert('Username or password is incorrect. Try again.')
-             window.location.href='http://127.0.0.1/mymusicratings/index.php';
+             window.location.href='index.php';
              </SCRIPT>");
   }
  ?>

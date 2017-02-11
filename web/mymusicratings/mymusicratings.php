@@ -5,6 +5,11 @@
 
     session_start();
 
+    // Redirect user if not logged in
+    if (!isset($_SESSION['logged_in'])) {
+    header('Location: index.php');
+    }
+
     $dbUrl = getenv('DATABASE_URL');
 
     $dbopts = parse_url($dbUrl);
@@ -16,6 +21,13 @@
     $dbName = ltrim($dbopts["path"],'/');
 
     $db = pg_connect("host=$dbHost port=$dbPort dbname=$dbName user=$dbUser password=$dbPassword");
+    if (!$db) {
+      echo ("<SCRIPT LANGUAGE='JavaScript'>
+              window.alert('Unable to establish connection to database. Try again later.')
+              window.location.href='index.php';
+              </SCRIPT>");
+      exit;
+    }
 
 ?>
 <!DOCTYPE html>
@@ -82,7 +94,7 @@
             $y++;
             echo '<div class="col-md-3 ">';
               /* Album Info */
-              echo '<img src="/mymusicratings/temp.png" height="180" width="180"/>';
+              echo '<img src="..\temp.png" height="180" width="180"/>';
               echo '<br/>';
               echo $row['album_artist'];
               echo '<br/>';

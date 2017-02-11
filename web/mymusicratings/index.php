@@ -1,4 +1,7 @@
 <?php
+if (isset($_SESSION['logged_in'])) {
+	header('Location: mymusicratings.php');
+}
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -24,7 +27,7 @@
 						my music ratings.
       		</a>
 		  	</div>
-			<p class="navbar-text navbar-right"><a href="#" class="navbar-link"><span class="glyphicon glyphicon-plus"></span> register</a></p>
+			<p class="navbar-text navbar-right"><a href="registeruser.php" class="navbar-link"><span class="glyphicon glyphicon-plus"></span> register</a></p>
 			</div>
 		</nav>
 
@@ -36,12 +39,12 @@
 				<form action="login.php" method="post">
 				  <div class="form-group">
 				    <label for="username">Username</label>
-				    <input type="text" class="form-control" placeholder="Username" name="username">
+				    <input type="text" class="form-control" placeholder="Username" name="username" required>
 				  </div>
 
 				  <div class="form-group">
 				    <label for="password">Password</label>
-				    <input type="password" class="form-control" placeholder="Password" name="password">
+				    <input type="password" class="form-control" placeholder="Password" name="password" required>
 				  </div>
 
 				  <button type="submit" name="Submit" class="btn btn-default" value="Login">Submit</button>

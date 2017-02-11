@@ -2,6 +2,7 @@
 
     error_reporting(E_ALL);
     ini_set("display_errors", 1);
+
     session_start();
 
     $dbUrl = getenv('DATABASE_URL');
@@ -15,6 +16,13 @@
     $dbName = ltrim($dbopts["path"],'/');
 
     $db = pg_connect("host=$dbHost port=$dbPort dbname=$dbName user=$dbUser password=$dbPassword");
+    if (!$db) {
+      echo ("<SCRIPT LANGUAGE='JavaScript'>
+              window.alert('Unable to establish connection to database. Try again later.')
+              window.location.href='index.php';
+              </SCRIPT>");
+      exit;
+    }
 
 ?>
 <!DOCTYPE html>
@@ -50,10 +58,18 @@
       		</a>
 		  	</div>
         <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
-          <p class="navbar-text navbar-right"><a href="logout.php" class="navbar-link"><span class="glyphicon glyphicon-log-out"></span> logout</a></p>
-          <p class="navbar-text navbar-right"><a href="addmusic.php" class="navbar-link"><span class="glyphicon glyphicon-music"></span> add music</a></p>
-          <p class="navbar-text navbar-right"><a href="browse.php" class="navbar-link"><span class="glyphicon glyphicon-search"></span> browse all</a></p>
-          <p class="navbar-text navbar-right"><a href="mymusicratings.php" class="navbar-link"><span class="glyphicon glyphicon-home"></span> my music</a></p>
+          <?php
+          // Show navigation depending if logged in or not
+          if (isset($_SESSION['logged_in'])) {
+            echo '<p class="navbar-text navbar-right"><a href="logout.php" class="navbar-link"><span class="glyphicon glyphicon-log-out"></span> logout</a></p>';
+            echo '<p class="navbar-text navbar-right"><a href="addmusic.php" class="navbar-link"><span class="glyphicon glyphicon-music"></span> add music</a></p>';
+            echo '<p class="navbar-text navbar-right"><a href="browse.php" class="navbar-link"><span class="glyphicon glyphicon-search"></span> browse all</a></p>';
+            echo '<p class="navbar-text navbar-right"><a href="mymusicratings.php" class="navbar-link"><span class="glyphicon glyphicon-home"></span> my music</a></p>';
+          } else {
+            echo '<p class="navbar-text navbar-right"><a href="registeruser.php" class="navbar-link"><span class="glyphicon glyphicon-plus"></span> register</a></p>';
+            echo '<p class="navbar-text navbar-right"><a href="index.php" class="navbar-link"><span class="glyphicon glyphicon-home"></span> home</a></p>';
+          }
+          ?>
         </div>
 			</div>
 		</nav>
@@ -62,17 +78,15 @@
     <div class="fluid container center-block">
         <div class="row">
         <?php
-          $currentuser = $_SESSION['userid'];
-
           /* Album query */
-          $albumquery = "SELECT album_artist, album_title, album_year, album_id, album_favorite FROM public.album";
+          $albumquery = "SELECT album_artist, album_title, album_year, album_id, album_favorite, user_id FROM public.album";
           $result = pg_query($albumquery) or die('Query failed: ' . pg_last_error());
           $row = pg_fetch_all($result);
 
-          /* Get username */
+          /* Get username
           $userquery = "SELECT username FROM public.user WHERE user_id = $currentuser";
           $result3 = pg_query($userquery) or die('Query failed: ' . pg_last_error());
-          $row3 = pg_fetch_all($result3);
+          $row3 = pg_fetch_all($result3); */
 
           // Initialize auto-incrementing id for tracklisting
           $x = 0;
@@ -85,7 +99,7 @@
             $y++;
             echo '<div class="col-md-3 ">';
               /* Album Info */
-              echo '<img src="/mymusicratings/temp.png" height="180" width="180"/>';
+              echo '<img src="temp.png" height="180" width="180"/>';
               echo '<br/>';
               echo $row['album_artist'];
               echo '<br/>';
@@ -99,8 +113,9 @@
                 echo '<span class="glyphicon glyphicon-heart-empty"></span>';
               }
               echo '<br/>';
-              echo 'by: ' . $row3[0]['username'];
-              echo '<br/>';
+              /* Not neccessary, fix later if wanted.
+              echo 'by: ' . $row['user_id'];
+              echo '<br/>'; */
 
               /* Track query */
               $album_id = $row['album_id'];
@@ -138,6 +153,9 @@
 
         ?>
       </div>
+      <?php
+      // echo '<pre>' . print_r(get_defined_vars(), true) . '</pre>';
+      ?>
     </div>
   </body>
 
