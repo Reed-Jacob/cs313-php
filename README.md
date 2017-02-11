@@ -9,3 +9,5 @@ CS 313 PHP Base Code
 04 Prove: Assignment - DB Setup - http://guarded-meadow-36110.herokuapp.com/mymusicratings/establish-database.sql
 
 05 Prove: Assignment - DB Accesss - http://guarded-meadow-36110.herokuapp.com/mymusicratings/ (username: admin | password: admin)
+
+06 Prove: Assignment - DB Update - http://guarded-meadow-36110.herokuapp.com/mymusicratings/ (Register and try for yourself!)
