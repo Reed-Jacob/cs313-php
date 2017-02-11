@@ -94,7 +94,7 @@
             $y++;
             echo '<div class="col-md-3 ">';
               /* Album Info */
-              echo '<img src="..\temp.png" height="180" width="180"/>';
+              echo '<img src="temp.png" height="180" width="180"/>';
               echo '<br/>';
               echo $row['album_artist'];
               echo '<br/>';

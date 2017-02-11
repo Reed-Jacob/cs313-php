@@ -310,10 +310,10 @@
     $trackquery->execute();
   }
 
-/*  echo ("<SCRIPT LANGUAGE='JavaScript'>
+  echo ("<SCRIPT LANGUAGE='JavaScript'>
           window.alert('Success! Returning to your music.')
           window.location.href='mymusicratings.php';
           </SCRIPT>");
-*/
-  echo '<pre>' . print_r(get_defined_vars(), true) . '</pre>';
+
+//  echo '<pre>' . print_r(get_defined_vars(), true) . '</pre>';
  ?>

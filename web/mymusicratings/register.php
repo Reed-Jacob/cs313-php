@@ -30,7 +30,7 @@
   if (!empty($numberofusers)) {
     echo ("<SCRIPT LANGUAGE='JavaScript'>
             window.alert('Username already exists! Please try another.')
-            window.location.href='http://127.0.0.1/mymusicratings/registeruser.php';
+            window.location.href='registeruser.php';
             </SCRIPT>");
   } else {
     // Insert data into user table
@@ -48,7 +48,7 @@
     ));
     echo ("<SCRIPT LANGUAGE='JavaScript'>
             window.alert('Successfully registered! Please log in to continue.')
-            window.location.href='http://127.0.0.1/mymusicratings/index.php';
+            window.location.href='index.php';
             </SCRIPT>");
   }
 
