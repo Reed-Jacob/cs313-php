@@ -8,7 +8,7 @@
 
 	<head>
 		<title>Login | My Music Ratings</title>
-		<?php require('/view/header.php'); ?>
+		<?php require('view/header.php'); ?>
 	</head>
 
 	<body>
