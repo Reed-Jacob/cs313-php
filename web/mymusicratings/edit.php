@@ -1,46 +1,19 @@
 <?php
 
-    error_reporting(E_ALL);
-    ini_set("display_errors", 1);
+  require('/model/database.php');
 
-    ob_start();
-    session_start();
+  // Redirect user if not logged in
+  if (!isset($_SESSION['logged_in'])) {
+  header('Location: index.php');
+  }
 
-    // Redirect user if not logged in
-    if (!isset($_SESSION['logged_in'])) {
-    header('Location: index.php');
-    }
-
-    $dbUrl = getenv('DATABASE_URL');
-
-    $dbopts = parse_url($dbUrl);
-
-    $dbHost = $dbopts["host"];
-    $dbPort = $dbopts["port"];
-    $dbUser = $dbopts["user"];
-    $dbPassword = $dbopts["pass"];
-    $dbName = ltrim($dbopts["path"],'/');
-    
-    $db = pg_connect("host=$dbHost port=$dbPort dbname=$dbName user=$dbUser password=$dbPassword");
-    if (!$db) {
-      echo ("<SCRIPT LANGUAGE='JavaScript'>
-             window.alert('Unable to establish connection to database. Try again later.') window.location.href='index.php'; </script>
-            ");
-    exit;
-}
 ?>
 
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="utf-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1">
   <title>Edit | My Music Ratings</title>
-  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
-  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>
-  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
-  <link href="https://fonts.googleapis.com/css?family=Montserrat" rel="stylesheet">
-  <link rel="stylesheet" href="mymusicratings.css">
+  <?php require('/view/header.php'); ?>
 </head>
 <body>
 <!-- Navigation bar -->
@@ -79,14 +52,16 @@
 			<?php
           $currentuser = $_SESSION['userid'];
           $currentalbum = $_POST['albumid'];
-          /* Album query */
-          $albumquery = "SELECT album_artist, album_title, album_year, album_favorite FROM public.album WHERE user_id = $currentuser AND album_id = $currentalbum";
-          $result = pg_query($albumquery) or die('Query failed: ' . pg_last_error());
-          $row = pg_fetch_all($result);
-          $albumartist = $row[0]['album_artist'];
-          $albumtitle = $row[0]['album_title'];
-          $albumyear = $row[0]['album_year'];
-          $albumfavorite = $row[0]['album_favorite'];
+          // Album query
+          $albumquery = $db->prepare("SELECT album_artist, album_title, album_year, album_favorite, album_art FROM public.album WHERE user_id = $currentuser AND album_id = $currentalbum");
+          $albumquery->execute();
+          $album = $albumquery->fetch(PDO::FETCH_ASSOC);
+          // Assign values from query
+          $albumartist = $album['album_artist'];
+          $albumtitle = $album['album_title'];
+          $albumyear = $album['album_year'];
+          $albumfavorite = $album['album_favorite'];
+          $albumart = pg_escape_string($album['album_art']);
         ?>
 			<h3>Album Details</h3>
 			<form method="post" action="editconfirm.php">
@@ -108,28 +83,32 @@
 					<input type="text" name="albumyear" class="form-control edit" value="<?php echo $albumyear; ?>" aria-describedby="basic-addon1">
           <input type="hidden" name="albumid" value="<?php echo $currentalbum; ?>">
 				</div>
+        <div class="input-group">
+					<span class="input-group-addon" id="basic-addon1">Album Art</span>
+					<input type="url" name="albumart" class="form-control edit" value="<?php echo $albumart; ?>" aria-describedby="basic-addon1">
+          <input type="hidden" name="albumid" value="<?php echo $currentalbum; ?>">
+				</div>
 				<br>
 				<h3>Track Details</h3>
 				<?php
-           /* Track query */
-           $trackquery = "SELECT track_number, track_title, track_favorite FROM public.track WHERE album_id = $currentalbum ORDER BY track_number ASC";
-           $result2 = pg_query($trackquery) or die('Query failed: ' . pg_last_error());
-           $row2 = pg_fetch_all($result2);
-           /* Create input for all tracks */
-           $x = 0;
-           while ($row2 = pg_fetch_array($result2)) {
-             $x++;
+           // Track query
+           $trackquery = $db->prepare("SELECT track_number, track_title, track_favorite FROM public.track WHERE album_id = $currentalbum ORDER BY track_number ASC");
+           $trackquery->execute();
+           // Incrementation
+           $y = 0;
+           // Create input for all tracks
+           while ($track = $trackquery->fetch(PDO::FETCH_ASSOC)) {
+             $y++;
              echo '<div class="input-group">
-            				<span class="input-group-addon" id="basic-addon1">Track ' . ''.$row2['track_number'].'</span>
-            				<input type="text" name="tracktitle'.$x.'" class="form-control edit" value="'.$row2['track_title'].'" aria-describedby="basic-addon1">
-                    <input type="hidden" name="tracknumber'.$x.'" value="'.$x.'">
+            				<span class="input-group-addon" id="basic-addon1">Track ' . ''.$track['track_number'].'</span>
+            				<input type="text" name="tracktitle'.$y.'" class="form-control edit" value="'.$track['track_title'].'" aria-describedby="basic-addon1">
+                    <input type="hidden" name="tracknumber'.$y.'" value="'.$y.'">
             				<span class="input-group-addon">
             				Favorite: ';
-             if ($row2['track_favorite'] == "t") {
-               echo '<input type="checkbox" name="trackfavorite'.$x.'" value="tracktrue" checked>'; }
-               else { echo '<input type="checkbox" name="trackfavorite'.$x.'" value="tracktrue">'; }
+             if ($track['track_favorite'] == "t") {
+               echo '<input type="checkbox" name="trackfavorite'.$y.'" value="tracktrue" checked>'; }
+               else { echo '<input type="checkbox" name="trackfavorite'.$y.'" value="tracktrue">'; }
                echo ' </span></div>'; }
-               // echo '<pre>' . print_r(get_defined_vars(), true) . '</pre>';
         ?>
         <button class="btn btn-primary btn-margin" type="submit">Submit Changes</button>
 		</form>

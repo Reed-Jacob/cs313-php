@@ -1,10 +1,6 @@
 <?php
 
-  error_reporting(E_ALL);
-  ini_set("display_errors", 1);
-
-  ob_start();
-  session_start();
+  require('/model/database.php');
 
   // Redirect user if not logged in
   if (!isset($_SESSION['logged_in'])) {
@@ -12,25 +8,6 @@
   }
 
   $currentuser = $_SESSION['userid'];
-
-  $dbUrl = getenv('DATABASE_URL');
-
-  $dbopts = parse_url($dbUrl);
-
-  $dbHost = $dbopts["host"];
-  $dbPort = $dbopts["port"];
-  $dbUser = $dbopts["user"];
-  $dbPassword = $dbopts["pass"];
-  $dbName = ltrim($dbopts["path"],'/');
-
-  $db = new PDO("pgsql:host=$dbHost port=$dbPort dbname=$dbName user=$dbUser password=$dbPassword");
-  if (!$db) {
-    echo ("<SCRIPT LANGUAGE='JavaScript'>
-            window.alert('Unable to establish connection to database. Try again later.')
-            window.location.href='index.php';
-            </SCRIPT>");
-    exit;
-  }
 
   // Get current username
   $loginquery = $db->prepare("SELECT username FROM public.user WHERE user_id = '$currentuser'");
@@ -42,6 +19,7 @@
   $albumid = $_POST['albumid'];
 	$albumartist = pg_escape_string($_POST['albumartist']);
   $albumtitle = pg_escape_string($_POST['albumtitle']);
+  $albumart = pg_escape_string($_POST['albumart']);
   $albumyear = $_POST['albumyear'];
   if (isset($_POST['albumfavorite'])) {
     $albumfavorite = 't';
@@ -50,7 +28,7 @@
 
   // Update album table
   $db->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
-  $albumquery = $db->prepare("UPDATE public.album SET album_artist = '$albumartist', album_title = '$albumtitle', album_year = '$albumyear', album_favorite = '$albumfavorite' WHERE album_id = '$albumid'");
+  $albumquery = $db->prepare("UPDATE public.album SET album_artist = '$albumartist', album_title = '$albumtitle', album_year = '$albumyear', album_favorite = '$albumfavorite', album_art = '$albumart' WHERE album_id = '$albumid'");
   $albumquery->execute();
 
   // Form data (track 1)
@@ -315,5 +293,5 @@
           window.location.href='mymusicratings.php';
           </SCRIPT>");
 
-//  echo '<pre>' . print_r(get_defined_vars(), true) . '</pre>';
+  // echo '<pre>' . print_r(get_defined_vars(), true) . '</pre>';
  ?>

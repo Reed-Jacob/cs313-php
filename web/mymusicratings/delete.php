@@ -1,52 +1,20 @@
 <?php
+require('/model/database.php');
 
-  error_reporting(E_ALL);
-  ini_set("display_errors", 1);
+// Redirect user if not logged in
+if (!isset($_SESSION['logged_in'])) {
+header('Location: index.php');
+}
 
-  ob_start();
-  session_start();
+// Required form data
+$albumid = $_POST['albumid'];
+?>
 
-  // Redirect user if not logged in
-  if (!isset($_SESSION['logged_in'])) {
-  header('Location: index.php');
-  }
-
-  $currentuser = $_SESSION['userid'];
-
-  $dbUrl = getenv('DATABASE_URL');
-
-  $dbopts = parse_url($dbUrl);
-
-  $dbHost = $dbopts["host"];
-  $dbPort = $dbopts["port"];
-  $dbUser = $dbopts["user"];
-  $dbPassword = $dbopts["pass"];
-  $dbName = ltrim($dbopts["path"],'/');
-
-  $db = new PDO("pgsql:host=$dbHost port=$dbPort dbname=$dbName user=$dbUser password=$dbPassword");
-  if (!$db) {
-    echo ("<SCRIPT LANGUAGE='JavaScript'>
-            window.alert('Unable to establish connection to database. Try again later.')
-            window.location.href='index.php';
-            </SCRIPT>");
-    exit;
-  }
-
-  // Required form data
-  $albumid = $_POST['albumid'];
-
- ?>
  <!DOCTYPE html>
  <html lang="en">
  <head>
-   <meta charset="utf-8">
-   <meta name="viewport" content="width=device-width, initial-scale=1">
    <title>Edit | My Music Ratings</title>
-   <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
-   <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>
-   <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
-   <link href="https://fonts.googleapis.com/css?family=Montserrat" rel="stylesheet">
-   <link rel="stylesheet" href="mymusicratings.css">
+   <?php require('/view/header.php'); ?>
  </head>
  <body>
  <!-- Navigation bar -->

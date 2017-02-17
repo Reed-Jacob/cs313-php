@@ -1,43 +1,14 @@
 <?php
 
-    error_reporting(E_ALL);
-    ini_set("display_errors", 1);
-
-    session_start();
-
-    $dbUrl = getenv('DATABASE_URL');
-
-    $dbopts = parse_url($dbUrl);
-
-    $dbHost = $dbopts["host"];
-    $dbPort = $dbopts["port"];
-    $dbUser = $dbopts["user"];
-    $dbPassword = $dbopts["pass"];
-    $dbName = ltrim($dbopts["path"],'/');
-
-    $db = pg_connect("host=$dbHost port=$dbPort dbname=$dbName user=$dbUser password=$dbPassword");
-    if (!$db) {
-      echo ("<SCRIPT LANGUAGE='JavaScript'>
-              window.alert('Unable to establish connection to database. Try again later.')
-              window.location.href='index.php';
-              </SCRIPT>");
-      exit;
-    }
+    require('/model/database.php');
 
 ?>
 <!DOCTYPE html>
 <html lang="en">
 
 	<head>
-		<meta charset="utf-8">
-		<meta name="viewport" content="width=device-width, initial-scale=1">
 		<title>Browse | My Music Ratings</title>
-		<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
- 		<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>
-  	<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
-		<link href="https://fonts.googleapis.com/css?family=Montserrat" rel="stylesheet">
-		<link rel="stylesheet" href="mymusicratings.css">
-
+    <?php require('/view/header.php'); ?>
 	</head>
 
 	<body>
@@ -78,36 +49,32 @@
     <div class="fluid container center-block">
         <div class="row">
         <?php
-          /* Album query */
-          $albumquery = "SELECT album_artist, album_title, album_year, album_id, album_favorite, user_id FROM public.album";
-          $result = pg_query($albumquery) or die('Query failed: ' . pg_last_error());
-          $row = pg_fetch_all($result);
+          // Album query
+          $albumquery = $db->prepare("SELECT album_artist, album_title, album_year, album_id, album_favorite, album_art FROM public.album");
+          $albumquery->execute();
 
-          /* Get username
+          /* // Get username
           $userquery = "SELECT username FROM public.user WHERE user_id = $currentuser";
           $result3 = pg_query($userquery) or die('Query failed: ' . pg_last_error());
           $row3 = pg_fetch_all($result3); */
 
-          // Initialize auto-incrementing id for tracklisting
-          $x = 0;
           // Initialize auto-incrementing id for edit
           $y = 0;
 
-          while ($row = pg_fetch_array($result))
+            while ($album = $albumquery->fetch(PDO::FETCH_ASSOC))
           {
-            $x++;
             $y++;
             echo '<div class="col-md-3 ">';
               /* Album Info */
-              echo '<img src="temp.png" height="180" width="180"/>';
+              echo '<img src="'.$album['album_art'].'" height="180" width="180"/>';
               echo '<br/>';
-              echo $row['album_artist'];
+              echo $album['album_artist'];
               echo '<br/>';
-              echo $row['album_title'];
+              echo $album['album_title'];
               echo '<br/>';
-              echo $row['album_year'];
+              echo $album['album_year'];
               echo '<br/>';
-              if ($row['album_favorite'] == "t") {
+              if ($album['album_favorite'] == "t") {
                 echo '<span class="glyphicon glyphicon-heart"></span>';
               } else {
                 echo '<span class="glyphicon glyphicon-heart-empty"></span>';
@@ -117,27 +84,26 @@
               echo 'by: ' . $row['user_id'];
               echo '<br/>'; */
 
-              /* Track query */
-              $album_id = $row['album_id'];
-              $trackquery = "SELECT track_number, track_title, track_favorite FROM public.track WHERE album_id = $album_id";
-              $result2 = pg_query($trackquery) or die('Query failed: ' . pg_last_error());
-              $row2 = pg_fetch_all($result2);
+              // Track query
+              $album_id = $album['album_id'];
+              $trackquery = $db->prepare("SELECT track_number, track_title, track_favorite FROM public.track WHERE album_id = $album_id");
+              $trackquery->execute();
 
-              /* Track Info */
-              echo '<a class="btn btn-primary" role="button" data-toggle="collapse" href="#collapse'.$x.'" aria-expanded="false" aria-controls="collapse'.$x.'">
+              // Track Info
+              echo '<a class="btn btn-primary" role="button" data-toggle="collapse" href="#collapse'.$y.'" aria-expanded="false" aria-controls="collapse'.$y.'">
                       Tracklist
                     </a>';
               echo '<br/>';
-              echo '<div class="collapse" id="collapse'.$x.'">';
+              echo '<div class="collapse" id="collapse'.$y.'">';
               echo '<br/>';
                 echo '<div class="well">';
-                    while ($row2 = pg_fetch_array($result2)) {
+                    while ($track = $trackquery->fetch(PDO::FETCH_ASSOC)) {
                       echo '<p class="split">';
-                      echo $row2['track_number'];
+                      echo $track['track_number'];
                       echo '. ';
-                      echo $row2['track_title'];
+                      echo $track['track_title'];
                       echo '<span>';
-                        if ($row2['track_favorite'] == "t") {
+                        if ($track['track_favorite'] == "t") {
                           echo '<span class="glyphicon glyphicon-heart"></span>';
                         } else {
                           echo '<span class="glyphicon glyphicon-heart-empty"></span>';
@@ -149,13 +115,8 @@
                 echo '</div>';
             echo '</div>';
           }
-
-
         ?>
       </div>
-      <?php
-      // echo '<pre>' . print_r(get_defined_vars(), true) . '</pre>';
-      ?>
     </div>
   </body>
 
