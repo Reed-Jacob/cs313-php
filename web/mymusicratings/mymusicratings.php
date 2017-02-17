@@ -47,7 +47,7 @@
           $currentuser = $_SESSION['userid'];
 
           // Album query
-          $albumquery = $db->prepare("SELECT album_artist, album_title, album_year, album_id, album_favorite, album_art FROM public.album WHERE user_id = $currentuser");
+          $albumquery = $db->prepare("SELECT album_artist, album_title, album_year, album_id, album_favorite, album_art FROM public.album WHERE user_id = $currentuser ORDER BY album_id ASC");
           $albumquery->execute();
 
           // Initialize auto-incrementing id for edit
@@ -75,7 +75,7 @@
 
               // Track query
               $album_id = $album['album_id'];
-              $trackquery = $db->prepare("SELECT track_number, track_title, track_favorite, album_id FROM public.track WHERE album_id = $album_id");
+              $trackquery = $db->prepare("SELECT track_number, track_title, track_favorite, album_id FROM public.track WHERE album_id = $album_id ORDER BY track_number ASC");
               $trackquery->execute();
 
               // Track Info

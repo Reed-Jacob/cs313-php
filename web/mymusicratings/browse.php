@@ -50,7 +50,7 @@
         <div class="row">
         <?php
           // Album query
-          $albumquery = $db->prepare("SELECT album_artist, album_title, album_year, album_id, album_favorite, album_art FROM public.album");
+          $albumquery = $db->prepare("SELECT album_artist, album_title, album_year, album_id, album_favorite, album_art FROM public.album ORDER BY album_id ASC");
           $albumquery->execute();
 
           /* // Get username
@@ -86,7 +86,7 @@
 
               // Track query
               $album_id = $album['album_id'];
-              $trackquery = $db->prepare("SELECT track_number, track_title, track_favorite FROM public.track WHERE album_id = $album_id");
+              $trackquery = $db->prepare("SELECT track_number, track_title, track_favorite FROM public.track WHERE album_id = $album_id ORDER BY track_number ASC");
               $trackquery->execute();
 
               // Track Info
