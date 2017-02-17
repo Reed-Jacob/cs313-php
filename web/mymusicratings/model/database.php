@@ -1,30 +1,6 @@
 <?php
+//Production Settings
 
-/* Localhost Settings */
-// Error reporting (not for production)
-error_reporting(E_ALL);
-ini_set("display_errors", 1);
-
-// Open session
-session_start();
-
-// Database credentials
-$dbUser = 'postgres';
-$dbPassword = 'password';
-$dbName = 'localhost';
-$dbHost = 'localhost';
-$dbPort = '5432';
-
-try {
-$db = new PDO("pgsql:host=$dbHost port=$dbPort dbname=$dbName user=$dbUser password=$dbPassword");
-$db->setAttribute( PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION );
-} catch (PDOException $ex) {
-		// Not for production
-		echo "Error connecting to DB. Details: $ex";
-		die();
-	}
-
-/* Production Settings
 // Open session
  session_start();
 
@@ -45,6 +21,5 @@ $db->setAttribute( PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION );
           </SCRIPT>");
  exit;
  }
- */
 
 ?>
