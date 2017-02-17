@@ -1,5 +1,5 @@
 <?php
-    require('/model/database.php');
+    require('model/database.php');
 
     // Redirect user if not logged in
     if (!isset($_SESSION['logged_in'])) {
@@ -10,7 +10,7 @@
 <html lang="en">
 	<head>
     <title>My Music Ratings</title>
-		<?php require('/view/header.php'); ?>
+		<?php require('view/header.php'); ?>
 	</head>
 
 	<body>

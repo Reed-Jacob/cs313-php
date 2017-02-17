@@ -1,6 +1,6 @@
 <?php
 
-  require('/model/database.php');
+  require('model/database.php');
 
   $currentuser = $_SESSION['userid'];
 

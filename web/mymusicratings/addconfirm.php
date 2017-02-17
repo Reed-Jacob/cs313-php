@@ -1,6 +1,6 @@
 <?php
 
-  require('/model/database.php');
+  require('model/database.php');
 
   // Redirect user if not logged in
   if (!isset($_SESSION['logged_in'])) {

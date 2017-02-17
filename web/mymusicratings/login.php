@@ -1,6 +1,6 @@
 <?php
 
-require ('/model/database.php');
+require ('model/database.php');
 
 // Form data
 $username = $_POST['username'];
